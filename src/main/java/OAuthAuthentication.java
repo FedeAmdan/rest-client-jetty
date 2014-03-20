@@ -25,17 +25,17 @@ public class OAuthAuthentication {
         this.grant_type = grant_type;
     }
 
-    public String getToken() throws Exception {
+    public synchronized String getNewToken() throws Exception {
         String json = authenticateASRapi();
         String token = getTokenFromJSON(json);
         System.out.println("OAuth token: "+ token);
         return token;
 
     }
-    private String authenticateASRapi() throws Exception {
+    private synchronized String authenticateASRapi() throws Exception {
 
-        Request request = httpClient.
-                newRequest("https://registry-qa.mulesoft.com/api/access-token")
+        Request request = httpClient
+                .newRequest("https://registry-qa.mulesoft.com/api/access-token")
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("grant_type", grant_type)
                 .header("username",username)
@@ -45,7 +45,6 @@ public class OAuthAuthentication {
 
         request.method(HttpMethod.POST);
         ContentResponse response = request.send();
-        time = DateTime.now();
         return response.getContentAsString();
     }
 
