@@ -1,8 +1,5 @@
 import org.eclipse.jetty.client.HttpClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
 
     public static HttpClient httpClient;
@@ -10,31 +7,12 @@ public class Main {
     public static String username = "username";
     public static String password = "password";
     public static String grant_type = "password";
+    public static String clientid = "WEBUI";
+    public static String contentType = "application/x-www-form-urlencoded";
+    public static String scope = "ADMIN_ORGANIZATIONS READ_SERVICES WRITE_SERVICES CONSUME_SERVICES APPLY_POLICIES READ_CONSUMERS WRITE_CONSUMERS CONTRACT_MGMT CONSUME_POLICIES";
 
     public static void main(String[] args) throws Exception {
-        RestClient client = new RestClient(baseUri,username,password,grant_type);
 
-        System.out.println("-----------------------------------------------------");
-        System.out.println("Threads:");
-        List<Thread> threads = new ArrayList<Thread>();
-        for (int i = 0; i < 20; i++) {
-            Runnable task = new ThreadRestCall(client);
-            Thread worker = new Thread(task);
-            // We can set the name of the thread
-            worker.setName(String.valueOf(i));
-            worker.start();
-
-            // Remember the thread for later usage
-            threads.add(worker);
-        }
-        for (int i = 0; i < 20; i++) {
-            threads.get(i).run();
-        }
-
-        for (int i = 0; i < 20; i++) {
-            threads.get(i).join();
-        }
-        System.out.println("End of the tests");
     }
 
 }
